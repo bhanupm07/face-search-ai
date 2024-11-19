@@ -22,16 +22,16 @@ const HeroSection = () => {
         //   backgroundColor: "rgba(0, 0, 0, 0.7)",
         // }}
       >
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-4 mt-10">
           Find Yourself Online Instantly
         </h1>
         <p className="text-lg md:text-2xl mb-6">
           Upload a photo and discover where it appears online.
         </p>
-        <img src={face} alt="illustration" className="w-80" />
+        <img src={face} alt="illustration" className="w-80 mb-8" />
         <Link
           to="/search"
-          className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-full text-xl"
+          className="bg-blue-600 hover:bg-blue-500 px-6 py-3 mb-20 rounded-full text-xl"
         >
           Get Started
         </Link>

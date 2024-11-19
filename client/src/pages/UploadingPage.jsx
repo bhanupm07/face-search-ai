@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Header from "../components/HomePage/Header";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { serverUrl } from "../utils/constants";
 
 const UploadingPage = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const handleFileUpload = async (e) => {
     setIsLoading(true);
@@ -30,6 +33,37 @@ const UploadingPage = () => {
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+    }
+  };
+
+  const handleSearchButton = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`${serverUrl}/api/v1/user/upload-image`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+      if (response.ok) {
+        toast({
+          title: "Image saved successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error during image upload:", error);
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -87,7 +121,7 @@ const UploadingPage = () => {
 
         {uploadedFile && (
           <button
-            onClick={() => setIsProcessing(true)}
+            onClick={handleSearchButton}
             className="w-full max-w-lg bg-purple-600 py-2 px-6 rounded-lg hover:bg-purple-500 text-lg font-semibold"
           >
             Search Now

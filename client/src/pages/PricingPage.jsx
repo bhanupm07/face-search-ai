@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { publishable_key } from "../utils/constants";
+import { publishable_key, serverUrl } from "../utils/constants";
 import Header from "../components/HomePage/Header";
-import Particles from "react-tsparticles";
+import { Spinner, useToast } from "@chakra-ui/react";
 
 const PricingPage = () => {
   const stripePromise = loadStripe(publishable_key);
   const [isProcessing, setIsProcessing] = useState(false);
+  const toast = useToast();
 
   const handleBuyNow = async () => {
     setIsProcessing(true);
     const stripe = await stripePromise;
 
     // Call your backend to create a Stripe checkout session
-    const response = await fetch(
-      "http://localhost:4000/api/v1/stripe/checkout",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ plan: "premium" }), // Pass the plan name
-      }
-    );
+    const response = await fetch(`${serverUrl}/api/v1/stripe/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plan: "premium" }), // Pass the plan name
+    });
 
     const session = await response.json();
 
@@ -32,7 +30,12 @@ const PricingPage = () => {
     });
 
     if (result.error) {
-      alert(result.error.message);
+      toast({
+        title: result.error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
     setIsProcessing(false);
   };
@@ -102,7 +105,7 @@ const PricingPage = () => {
             onClick={handleBuyNow}
             className="w-full bg-purple-600 text-white py-3 mt-6 rounded-lg hover:bg-purple-500"
           >
-            {isProcessing ? "loading..." : "Buy Now"}
+            {isProcessing ? <Spinner /> : "Buy Now"}
           </button>
         </div>
       </div>

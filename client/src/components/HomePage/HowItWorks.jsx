@@ -1,20 +1,26 @@
 import React from "react";
+import upload from "../../assets/upload.png";
+import ai from "../../assets/ai.png";
+import results from "../../assets/results.png";
 
 const steps = [
   {
     title: "Upload Your Photo",
     description: "Simply upload a photo to start searching across the web.",
-    imgUrl: "https://cdn-icons-png.flaticon.com/512/3179/3179068.png",
+    // imgUrl: "https://cdn-icons-png.flaticon.com/512/3179/3179068.png",
+    imgUrl: upload,
   },
   {
     title: "AI Processes the Data",
     description: "Our AI scans the internet for your matches in seconds.",
-    imgUrl: "https://cdn-icons-png.flaticon.com/512/1161/1161381.png",
+    // imgUrl: "https://cdn-icons-png.flaticon.com/512/1161/1161381.png",
+    imgUrl: ai,
   },
   {
     title: "View Your Results",
     description: "Get a detailed list of where your image appears online.",
-    imgUrl: "https://cdn-icons-png.flaticon.com/512/4305/4305301.png",
+    // imgUrl: "https://cdn-icons-png.flaticon.com/512/4305/4305301.png",
+    imgUrl: results,
   },
 ];
 

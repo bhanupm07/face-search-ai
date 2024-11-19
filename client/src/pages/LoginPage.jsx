@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { serverUrl } from "../utils/constants";
+import { Spinner, useToast } from "@chakra-ui/react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -7,6 +9,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,7 +17,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:4000/api/v1/auth/login", {
+      const response = await fetch(`${serverUrl}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,8 +29,20 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token); // Save token in localStorage
         navigate("/search"); // Redirect to the homepage
+        toast({
+          title: "Logged in successfully!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         setError(data.message || "Invalid credentials");
+        toast({
+          title: "Something went wrong!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (err) {
       setError("Something went wrong. Please try again later.");
@@ -74,7 +89,7 @@ const Login = () => {
             }`}
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Spinner /> : "Login"}
           </button>
         </form>
         <p className="text-sm text-gray-400 mt-4 text-center">

@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserInfoContext } from "../../context/userInfoContext";
+import { useToast } from "@chakra-ui/react";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { userInfo } = useContext(UserInfoContext);
+  const toast = useToast();
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
+    toast({
+      title: "Logged out successfully",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -46,11 +56,24 @@ const Header = () => {
         </nav>
         {/* CTA Button */}
         {localStorage.getItem("token") ? (
-          <div>hello world!</div>
+          <div className="flex items-center gap-2">
+            {userInfo?.uploadedImage?.length ? (
+              <img src={userInfo?.uploadedImage[0]} alt="pfp" />
+            ) : (
+              <div className="text-black bg-gray-300 w-8 h-8 rounded-full flex justify-center items-center">
+                {userInfo?.name ? userInfo?.name?.split("")?.[0] : "U"}
+              </div>
+            )}
+            <p>{userInfo?.name ? userInfo.name : "User"}</p>
+          </div>
         ) : (
-          <button className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-full text-white">
+          // <div>User</div>
+          <Link
+            to="/search"
+            className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-full text-white"
+          >
             Try Now
-          </button>
+          </Link>
         )}
       </div>
     </header>
