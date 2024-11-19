@@ -46,6 +46,7 @@ const UploadingPage = () => {
           "Content-Type": "application/json",
           Authorization: token,
         },
+        body: JSON.stringify({ imageUrl: uploadedFile }),
       });
       if (response.ok) {
         toast({

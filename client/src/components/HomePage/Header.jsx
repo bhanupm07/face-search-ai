@@ -58,7 +58,11 @@ const Header = () => {
         {localStorage.getItem("token") ? (
           <div className="flex items-center gap-2">
             {userInfo?.uploadedImage?.length ? (
-              <img src={userInfo?.uploadedImage[0]} alt="pfp" />
+              <img
+                src={userInfo?.uploadedImage[0]}
+                alt="pfp"
+                className="w-8 h-8 rounded-full object-cover"
+              />
             ) : (
               <div className="text-black bg-gray-300 w-8 h-8 rounded-full flex justify-center items-center">
                 {userInfo?.name ? userInfo?.name?.split("")?.[0] : "U"}
